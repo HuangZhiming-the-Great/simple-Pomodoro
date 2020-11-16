@@ -19,7 +19,7 @@ class SetMinutes extends React.Component {
 
         React.createElement("div",{
           id:this.props.setDiv.id,
-          clsaaName:this.props.setDiv.className
+          className:this.props.setDiv.className
         },
           React.createElement("button",{
             id:this.props.upButton.id,

@@ -5,7 +5,72 @@
   background-color: #eee;
 }
 
+/* Layout */
+
+#App {
+  display: flex;
+  flex-wrap:wrap;
+  justify-content: space-evenly;
+  max-width: 600px;
+  margin: 50px auto;
+  padding:auto 5%;
+}
+
+#set-break-minutes-container {
+  order: 1;
+}
+
+#set-session-minutes-container {
+  order: 2;
+}
+
+#show-timer-container {
+  order: 3;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  
+  width: 250px;
+  flex-basis: 1 1;
+  margin-bottom: 36px;
+  padding: 25px;
+  border: 3px solid brown;
+  border-radius: 25px;
+}
+
+
+
+.inner-container {
+  display: flex;
+  justify-content: space-evenly;
+
+}
+
+/* Style */
+
+.container>label {
+ font-size: 56px;
+ text-transform: capitalize; 
+ text-align: center;
+}
+
 p {
   font-size:36px;
   text-transform: uppercase;
+  text-align: center;
+  min-width: 56px;
+}
+
+button {
+  border:none;
+  border-radius:6px;
+  background-color: rgba(165, 42, 42, 0.6);
+  color:blue;
+  width: 72px;
+  height: 43px;
+  margin: auto 8px;
 }
