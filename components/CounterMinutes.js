@@ -22,6 +22,7 @@ class CounterMinutes extends React.Component {
           className:this.props.showP.className,
           go:this.props.showP.go,
           setTime:this.props.showP.setTime,
+          giveTimerTime:this.props.showP.giveTimerTime,
           noTime:this.props.showP.noTime,
           nextCountLength:this.props.showP.nextCountLength
         }),

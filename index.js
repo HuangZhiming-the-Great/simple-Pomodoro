@@ -9,6 +9,7 @@ class Pomdoro extends React.Component {
       sessionMinutes:25,
       state:"work",
       play:true,
+      settingTime:false,
       timereboot:false
     }
     this.resetTime=[25,0];
@@ -17,6 +18,7 @@ class Pomdoro extends React.Component {
     this.changePlay=this.changePlay.bind(this);
     this.reset=this.reset.bind(this);
     this.resetTimer=this.resetTimer.bind(this);
+    this.giveTimerTime=this.giveTimerTime.bind(this);
     this.onTime=this.onTime.bind(this);
     this.nextCountLength=this.nextCountLength.bind(this);
   }
@@ -51,14 +53,16 @@ class Pomdoro extends React.Component {
   changeBreakMinutes(step){
     const data=this._checkAndReturnNumber(this.state.breakMinutes+step);
     this.setState({
-      breakMinutes:data
+      breakMinutes:data,
+      settingTime:this.state.state==='work'?false:true
     })
   }
 
   changeSessionMinutes(step){
     const data=this._checkAndReturnNumber(this.state.sessionMinutes+step);
     this.setState({
-      sessionMinutes:data
+      sessionMinutes:data,
+      settingTime:this.state.state==='relax'?false:true
     })
   }
 
@@ -67,7 +71,7 @@ class Pomdoro extends React.Component {
       breakMinutes:5,
       sessionMinutes:25,
       state:"work",
-      play:true,
+      play:false,
       timereboot:true
     });
     this._resetMusic();
@@ -82,6 +86,23 @@ class Pomdoro extends React.Component {
     }else{
       return [];
     }
+  }
+
+  giveTimerTime(){
+    if(this.state.settingTime===true){
+      this.setState({
+        settingTime:false
+      });
+      switch(this.state.state){
+        case 'work':
+          return [this.state.sessionMinutes,0];
+        case 'relax':
+          return [this.state.breakMinutes,0];
+        default:
+          return [];
+      }
+    }
+    return [];
   }
 
   changePlay(){
@@ -147,7 +168,7 @@ class Pomdoro extends React.Component {
             text:"increase",
             onClick:()=>this.changeSessionMinutes(1)},
           showP:{
-            id:"break-length",
+            id:"session-length",
             className:"show-length",
             text:this.state.sessionMinutes},
           downButton:{id:"session-decrement",
@@ -171,10 +192,11 @@ class Pomdoro extends React.Component {
             className:"timer",
             go:this.state.play,
             setTime:this.resetTimer,
+            giveTimerTime:this.giveTimerTime,
             noTime:this.onTime,
             nextCountLength:this.nextCountLength},
           play:{
-            id:"start-stop",
+            id:"start_stop",
             className:"start-stop-button",
             text:"run-pause",
             onClick:this.changePlay

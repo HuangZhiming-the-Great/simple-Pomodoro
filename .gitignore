@@ -1,2 +1,3 @@
 components/AddSubtract.js
 *.scss
+node_modules

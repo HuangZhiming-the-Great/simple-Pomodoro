@@ -71,11 +71,18 @@ class Timer extends React.Component {
 
 
   componentWillUpdate(){
-        const time=this.props.setTime();
+    const time=this.props.setTime();
     if(time.length!==0){
       this.setState({
         minutes:time[0],
         seconds:time[1]
+      })
+    }
+    const set=this.props.giveTimerTime();
+    if(set.length!==0){
+      this.setState({
+        minutes:set[0],
+        seconds:set[1]
       })
     }
   }
