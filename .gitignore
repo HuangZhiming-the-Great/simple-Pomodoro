@@ -1,3 +1,8 @@
-components/AddSubtract.js
-*.scss
 node_modules
+dist
+
+components/AddMusic.js
+*.scss
+
+!yarn.lock
+yarn-error.log

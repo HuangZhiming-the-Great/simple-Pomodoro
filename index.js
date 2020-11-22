@@ -71,7 +71,7 @@ class Pomdoro extends React.Component {
       breakMinutes:5,
       sessionMinutes:25,
       state:"work",
-      play:false,
+      play:true,
       timereboot:true
     });
     this._resetMusic();

@@ -7,12 +7,24 @@
     <link href="index.css" rel="stylesheet" type="text/css">
   </head>
   <body>
-    <audio id="beep" preload="auto">
-      <source src="https://github.com/HuangZhiming-the-Great/simple-Pomodoro/blob/main/music/%E5%8D%81%E4%B8%89%E6%9C%88.mp3" type="audio/mp3" />
+    <audio id="beep">
+      <source src="/home/huang/音乐/十三月.mp3" />
       Your browser does not support the <code>audio</code> element.
     </audio>
     <h1 style="font-size: 68px; text-align: center;">25+5 Pomodoro</h1>
     <div id="root"></div>
+    <div class="change-audio-source">
+      <input id="music-place-input" type="text" placeholder="enter the music name with whole path">
+      <button id="change-music-button">Change the Music</button>
+    </div>
+    <script>
+      const change=document.getElementById("change-music-button");
+      change.onclick=()=>{
+        const musicInput=document.getElementById("music-place-input");
+        document.getElementById("beep").src=musicInput.value;
+        alert("the music changed");
+      }
+    </script>
   </body>
   <script src='./js/react-15.3.1.min.js'></script>
 <script src='./js/react-dom-15.3.1.min.js'></script>

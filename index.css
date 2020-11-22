@@ -6,6 +6,11 @@
 }
 
 /* Layout */
+body {
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 #App {
   display: flex;
@@ -50,6 +55,13 @@
 
 }
 
+div.change-audio-source {
+  display: flex;
+  justify-content:center;
+  width: 80%;
+  margin-bottom: 20px;
+}
+
 /* Style */
 
 .container>label {
@@ -73,4 +85,14 @@ button {
   width: 72px;
   height: 43px;
   margin: auto 8px;
+}
+
+div.change-audio-source input {
+  border: 1px solid rgba(255, 255, 0, 0.521);
+  border-radius: 15px;
+  flex: 0 1 80%;
+}
+
+div.change-audio-source button {
+  width: auto;
 }
