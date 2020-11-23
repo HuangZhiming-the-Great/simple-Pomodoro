@@ -18,3 +18,14 @@
     主要问题是main在引入的时候用的是ES6的import语句。
     在参考了别人关于audio的mp3播放器以后，好像别人刻意的在import方面使用ES5的语句。所以我尝试了很多关于其它是不是文件导入等其它原因以后，更改了语句为ES5.就可以播放了！
     不过这个也不是全部的原因.后来我又安装了electron-prebuilt-compiler@8.2.0(要求我必须安装这个版本的库),结果又出现了之前的问题.发现原来是之前最开始的报错有问题.是一个关于x-require.js的文件里用了过期的函数导致的.
+
+## 打包
+- 1. 打包跑起来
+  这一步就是简单的跑起来。只是希望能够做出一个安装包就好。
+  由于之前使用electron-forge打包出现无法播放声音的问题。所以这次使用的是electron-builder。
+  ```bash
+  yarn global add electron-builder//全局安装electron-builder
+  electron-builder --version //查看版本，确定是否安装成功
+  cd my-project-repository//进入到自己要打包的文件夹下
+  electron-builder -l//打包成linux系统下的运行程序
+  //由于我还是对打包的参数不太了解所以就只能这么打包，最后打包出来会在dist文件夹下生成一个可以直接运行的appimage程序。算是能够解决基本要求。
