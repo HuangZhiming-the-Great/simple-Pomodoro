@@ -34,7 +34,8 @@ class CounterMinutes extends React.Component {
             id:this.props.play.id,
             className:this.props.play.className,
             onClick:this.props.play.onClick
-          },this.props.play.text),        React.createElement("button",{
+          },this.props.play.text),   
+          React.createElement("button",{
             id:this.props.reset.id,
             className:this.props.reset.className,
             onClick:this.props.reset.onClick

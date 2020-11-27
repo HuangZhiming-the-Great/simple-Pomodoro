@@ -96,3 +96,10 @@ div.change-audio-source input {
 div.change-audio-source button {
   width: auto;
 }
+
+input {
+  width: 90%;
+  margin-top: 1rem;
+  border: 1px solid brown;
+  border-radius: 20px;
+}

@@ -6,11 +6,13 @@ class Pomdoro extends React.Component {
     super(props);
     this.state={
       breakMinutes:5,
-      sessionMinutes:25,
+      sessionMinutes:0,
       state:"work",
       play:true,
       settingTime:false,
-      timereboot:false
+      timereboot:false,
+      breakMusic:"/home/huang/音乐/十三月.mp3",
+      sessionMusic:"/home/huang/音乐/十三月.mp3"
     }
     this.resetTime=[25,0];
     this.changeSessionMinutes=this.changeSessionMinutes.bind(this);
@@ -21,6 +23,7 @@ class Pomdoro extends React.Component {
     this.giveTimerTime=this.giveTimerTime.bind(this);
     this.onTime=this.onTime.bind(this);
     this.nextCountLength=this.nextCountLength.bind(this);
+    this.handleInput=this.handleInput.bind(this);
   }
 
   _checkAndReturnNumber(data){
@@ -40,8 +43,33 @@ class Pomdoro extends React.Component {
       state:data
     })
   }
+  _fileToURL(f){
+    //如果没有选择音乐，就返回一个默认的音乐地址
+    if(f==={}){
+      return "/home/huang/音乐/十三月.mp3";
+    }
+    let url;
+    if(window.createObjectURL){
+      url = window.createObjectURL(f)
+    }else if(window.createBlobURL){
+      url = window.createBlobURL(f)
+    }else if(window.URL && window.URL.createObjectURL){
+      url = window.URL.createObjectURL(f)
+    }else if(window.webkitURL && window.webkitURL.createObjectURL){
+      url = window.webkitURL.createObjectURL(f)
+    }
+    return url;
+  }
   _playMusic(){
     const musicPlayer=document.getElementById("beep");
+    switch(this.state.state){
+      case 'work':
+        musicPlayer.src=(this.state.sessionMusic);
+        break;
+      case 'relax':
+        musicPlayer.src=(this.state.breakMusic);
+        break;
+    }
     musicPlayer.play();
   }
   _pauseMusic(){
@@ -125,6 +153,15 @@ class Pomdoro extends React.Component {
     }
   }
 
+  // 获得用户设置的本地音乐文件
+  handleInput(file,propName){
+    propName==="breakMusic"? this.setState({
+      breakMusic:file.path
+    }) : this.setState({
+      sessionMusic:file.path
+    })
+  }
+
   nextCountLength(){
     return this.state.state==='work'? this.state.sessionMinutes:this.state.breakMinutes;
   }
@@ -163,7 +200,10 @@ class Pomdoro extends React.Component {
             id:"break-decrement",
             className:"updown-button",
             text:"decrease",
-            onClick:()=>this.changeBreakMinutes(-1)}
+            onClick:()=>this.changeBreakMinutes(-1)},
+          input:{
+            onChange:(file)=>{this.handleInput(file,"breakMusic")}
+          }
         }),
         React.createElement(SetMinutes,{
           container:{
@@ -187,7 +227,10 @@ class Pomdoro extends React.Component {
           downButton:{id:"session-decrement",
           className:"updown-button",
           text:"decrease",
-          onClick:()=>this.changeSessionMinutes(-1)}
+          onClick:()=>this.changeSessionMinutes(-1)},
+          input:{
+            onChange:(file)=>{this.handleInput(file,"sessionMusic")}
+          }
         }),
 
         React.createElement(CounterMinutes,{

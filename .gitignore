@@ -4,5 +4,5 @@ dist
 components/AddMusic.js
 *.scss
 
-!yarn.lock
+yarn.lock
 yarn-error.log

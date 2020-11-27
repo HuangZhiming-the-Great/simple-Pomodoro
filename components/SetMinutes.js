@@ -35,9 +35,11 @@ class SetMinutes extends React.Component {
             className:this.props.downButton.className,
             onClick:this.props. downButton.onClick
           },this.props.downButton.text)
-
-        )
-
+        ),
+        React.createElement("input",{
+          type:"file",
+          onChange:(e)=>this.props.input.onChange(e.target.files[0])
+        })
       )
     );
   }
