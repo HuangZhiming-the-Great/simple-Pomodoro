@@ -29,3 +29,6 @@
   cd my-project-repository//进入到自己要打包的文件夹下
   electron-builder -l//打包成linux系统下的运行程序
   //由于我还是对打包的参数不太了解所以就只能这么打包，最后打包出来会在dist文件夹下生成一个可以直接运行的appimage程序。算是能够解决基本要求。
+
+## 关于electron的问题
+  1. 由于我对electron 的了解还不够，所以对使用electron-store还是失败了，我转而将改进变成了客户输入音乐到index.js文件里的state中，所以每次启动程序，用户之前的设置都是没有的。
