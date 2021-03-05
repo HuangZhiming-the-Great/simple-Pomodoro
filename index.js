@@ -11,7 +11,7 @@ let musicObject;
 // 初始化两个音乐文件
 ipcRenderer.on("init-music-files", (event, data)=>{
   musicObject=data;
-
+  //查看音乐信息
   console.log("ipcrender");
   console.log(musicObject);
 })
@@ -184,14 +184,19 @@ class Pomdoro extends React.Component {
 
   // at this point the musicObject variable is not changed.
   componentDidMount(){
-    console.log("componentDidMount:"+this.state.breakMusic);
+    // console.log("componentDidMount:")
+    // console.log(musicObject);
   }
   
   componentWillUpdate(nextProps,nextState){
+    // 下面是判断是否为第一次使用，还没有设置音乐。
+    if(musicObject.sessionMusic=="" || musicObject.breakMusic==""){
+      alert("缺少设置的音乐文件，请设置:-)");
+    }
     // 因为还对React组件的生命周期
     // 和electron的信息流通的前后把控不够，
     // 所以初始音乐文件只能事后在运行时加载
-    // 下面是判断是否为第一次使用，还没有设置音乐。
+    // 在这个地方，使用setState()只能用一次！！！
     let check=0; // bit 00
     if(nextState.breakMusic == ""){
       check=check | 2; //bit 10
@@ -221,8 +226,6 @@ class Pomdoro extends React.Component {
       default:
         break;
     }
-    console.log("componentWillUpdate:"+nextState.breakMusic+" "+nextState.sessionMusic);
-
   }
 
   render(){
