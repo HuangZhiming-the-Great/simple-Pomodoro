@@ -191,41 +191,48 @@ class Pomdoro extends React.Component {
   componentWillUpdate(nextProps,nextState){
     // 下面是判断是否为第一次使用，还没有设置音乐。
     if(musicObject.sessionMusic=="" || musicObject.breakMusic==""){
-      alert("缺少设置的音乐文件，请设置:-)");
+      alert("至少缺少一个音乐文件，请设置:-)");
+      return;
+    }else{
+      // 因为还对React组件的生命周期
+      // 和electron的信息流通的前后把控不够，
+      // 所以初始音乐文件只能事后在运行时加载
+      // 在这个地方，使用setState()只能用一次！！！
+      let check=0; // bit 00
+      if(nextState.breakMusic == ""){
+        check=check | 2; //bit 10
+      } 
+      if(nextState.sessionMusic == ""){
+        check=check | 1; //bit 01
+      }
+      // 如果已经配置好了音乐文件就忽略下面的问题。
+      if(check==0){
+        return;
+      }
+      console.log(check);
+      switch(check){
+        case 1:
+          this.setState({
+            sessionMusic:musicObject.sessionMusic
+          })
+        break;
+        case 2:
+          this.setState({
+            breakMusic:musicObject.breakMusic,
+          })
+        break;
+        case 3:
+          this.setState({
+            breakMusic:musicObject.breakMusic,
+            sessionMusic:musicObject.sessionMusic
+          })
+        break;
+        case 0:
+          default:
+        break;
+      }
     }
-    // 因为还对React组件的生命周期
-    // 和electron的信息流通的前后把控不够，
-    // 所以初始音乐文件只能事后在运行时加载
-    // 在这个地方，使用setState()只能用一次！！！
-    let check=0; // bit 00
-    if(nextState.breakMusic == ""){
-      check=check | 2; //bit 10
-    } 
-    if(nextState.sessionMusic == ""){
-      check=check | 1; //bit 01
-    }
-    console.log(check);
-    switch(check){
-      case 1:
-        this.setState({
-          sessionMusic:musicObject.sessionMusic
-        })
-        break;
-      case 2:
-        this.setState({
-          breakMusic:musicObject.breakMusic,
-        })
-        break;
-      case 3:
-        this.setState({
-          breakMusic:musicObject.breakMusic,
-          sessionMusic:musicObject.sessionMusic
-        })
-        break;
-      case 0:
-      default:
-        break;
-    }
+    
   }
 
   render(){
