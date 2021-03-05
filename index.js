@@ -1,20 +1,31 @@
 import SetMinutes from './components/SetMinutes.js';
 import CounterMinutes from './components/CounterMinutes.js';
 
+
+//import the ipcRender from electron
+const { ipcRenderer } = require('electron');
+
+let musicObject;
+
+ipcRenderer.on("init-music-files", (event, data)=>{
+  musicObject=data;
+  console.log("ipcrender"+musicObject.toString()+ (musicObject instanceof Object).toString());
+})
+
 class Pomdoro extends React.Component {
   constructor(props){
     super(props);
     this.state={
-      breakMinutes:5,
-      sessionMinutes:0,
+      breakMinutes:1,
+      sessionMinutes:1,
       state:"work",
       play:true,
       settingTime:false,
       timereboot:false,
-      breakMusic:"/home/huang/音乐/十三月.mp3",
-      sessionMusic:"/home/huang/音乐/十三月.mp3"
+      breakMusic: "",
+      sessionMusic:""
     }
-    this.resetTime=[25,0];
+    this.resetTime=[25,5];
     this.changeSessionMinutes=this.changeSessionMinutes.bind(this);
     this.changeBreakMinutes=this.changeBreakMinutes.bind(this);
     this.changePlay=this.changePlay.bind(this);
@@ -43,23 +54,7 @@ class Pomdoro extends React.Component {
       state:data
     })
   }
-  _fileToURL(f){
-    //如果没有选择音乐，就返回一个默认的音乐地址
-    if(f==={}){
-      return "/home/huang/音乐/十三月.mp3";
-    }
-    let url;
-    if(window.createObjectURL){
-      url = window.createObjectURL(f)
-    }else if(window.createBlobURL){
-      url = window.createBlobURL(f)
-    }else if(window.URL && window.URL.createObjectURL){
-      url = window.URL.createObjectURL(f)
-    }else if(window.webkitURL && window.webkitURL.createObjectURL){
-      url = window.webkitURL.createObjectURL(f)
-    }
-    return url;
-  }
+  
   _playMusic(){
     const musicPlayer=document.getElementById("beep");
     switch(this.state.state){
@@ -107,6 +102,7 @@ class Pomdoro extends React.Component {
       timereboot:true
     });
     this._resetMusic();
+
   }
 
   resetTimer(){
@@ -155,11 +151,19 @@ class Pomdoro extends React.Component {
 
   // 获得用户设置的本地音乐文件
   handleInput(file,propName){
-    propName==="breakMusic"? this.setState({
-      breakMusic:file.path
-    }) : this.setState({
-      sessionMusic:file.path
-    })
+    if(propName==="breakMusic"){
+      this.setState({
+        breakMusic:file.path
+      }) 
+      musicObject.breakMusic=file.path;
+      ipcRenderer.send("change-breakMusic",file.path);
+    }else{
+      this.setState({
+        sessionMusic:file.path
+      })
+      musicObject.sessionMusic=file.path;
+      ipcRenderer.send("change-sessionMusic",file.path);
+    } 
   }
 
   nextCountLength(){
@@ -169,6 +173,46 @@ class Pomdoro extends React.Component {
   onTime(){
     this._changeState();
     this._playMusic();
+  }
+
+  // at this point the musicObject variable is not changed.
+
+  componentDidMount(){
+    console.log("componentDidMount:"+this.state.breakMusic);
+  }
+  
+  componentWillUpdate(nextProps,nextState){
+    let check=0; // bit 00
+    if(nextState.breakMusic == ""){
+      check=check | 2; //bit 10
+    } 
+    if(nextState.sessionMusic == ""){
+      check=check | 1; //bit 01
+    }
+    console.log(check);
+    switch(check){
+      case 1:
+        this.setState({
+          sessionMusic:musicObject.sessionMusic
+        })
+        break;
+      case 2:
+        this.setState({
+          breakMusic:musicObject.breakMusic,
+        })
+        break;
+      case 3:
+        this.setState({
+          breakMusic:musicObject.breakMusic,
+          sessionMusic:musicObject.sessionMusic
+        })
+        break;
+      case 0:
+      default:
+        break;
+    }
+    console.log("componentWillUpdate:"+nextState.breakMusic+" "+nextState.sessionMusic);
+
   }
 
   render(){

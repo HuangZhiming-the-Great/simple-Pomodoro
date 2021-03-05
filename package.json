@@ -22,6 +22,6 @@
     "nodemon": "^2.0.6"
   },
   "dependencies": {
-    "electron-store": "^6.0.1"
+    "electron-store": "^7.0.2"
   }
 }

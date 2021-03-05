@@ -1,4 +1,16 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+
+// 尝试使用electron-store
+const Store = require('electron-store');
+
+const store = new Store();
+let musicData = store.get('music') || {breakMusic:'', sessionMusic:''};
+
+// see the file's path
+// console.log(app.getPath('userData'));
+
+store.set('music', musicData);
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
@@ -16,12 +28,29 @@ const createWindow = () => {
   // and load the index.html of the app.
   mainWindow.loadURL(`file://${__dirname}/index.html`);
 
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools();
-
   // disable the menu bar.
   mainWindow.setMenu(null);
 
+  // Open the DevTools.
+  mainWindow.webContents.openDevTools();
+
+  // load the music files.
+  mainWindow.webContents.on("did-finish-load",()=>{
+    mainWindow.send("init-music-files",store.get("music"));
+  })
+
+  ipcMain.on("change-breakMusic",(event,data)=>{
+    musicData=Object.assign({},musicData,{breakMusic:data});
+    store.set("music",musicData);
+    console.log("break");
+    console.log(store.get("music"));
+  })
+
+  ipcMain.on("change-sessionMusic",(event,data)=>{
+    musicData = Object.assign({},musicData,{sessionMusic:data});
+    store.set("music",musicData);
+    console.log(store.get("music"));
+  })
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {
     // Dereference the window object, usually you would store windows
@@ -34,7 +63,17 @@ const createWindow = () => {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
+app.on('ready', ()=>{
+  createWindow();
+
+  if(musicData.sessionMusic=="" || musicData.breakMusic ==""){
+    dialog.showMessageBox({
+      type: "info",
+      title: '提示',
+      message: '请选择切换时的音乐文件'
+    })
+  }
+});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
