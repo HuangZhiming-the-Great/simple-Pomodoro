@@ -41,7 +41,7 @@ const createWindow = () => {
   mainWindow.setMenu(null);
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 
   // load the music files.
   mainWindow.webContents.on("did-finish-load",()=>{

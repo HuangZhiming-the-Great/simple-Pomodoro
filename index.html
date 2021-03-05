@@ -13,18 +13,6 @@
     </audio>
     <h1 style="font-size: 68px; text-align: center;">25+5 Pomodoro</h1>
     <div id="root"></div>
-    <div class="change-audio-source">
-      <input id="music-place-input" type="text" placeholder="enter the music name with whole path">
-      <button id="change-music-button">Change the Music</button>
-    </div>
-    <script>
-      const change=document.getElementById("change-music-button");
-      change.onclick=()=>{
-        const musicInput=document.getElementById("music-place-input");
-        document.getElementById("beep").src=musicInput.value;
-        alert("the music changed");
-      }
-    </script>
   </body>
   <script src='./js/react-15.3.1.min.js'></script>
 <script src='./js/react-dom-15.3.1.min.js'></script>
