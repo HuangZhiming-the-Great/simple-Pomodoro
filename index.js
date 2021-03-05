@@ -5,11 +5,15 @@ import CounterMinutes from './components/CounterMinutes.js';
 //import the ipcRender from electron
 const { ipcRenderer } = require('electron');
 
+// 存储electron-store的文件数据
 let musicObject;
 
+// 初始化两个音乐文件
 ipcRenderer.on("init-music-files", (event, data)=>{
   musicObject=data;
-  console.log("ipcrender"+musicObject.toString()+ (musicObject instanceof Object).toString());
+
+  console.log("ipcrender");
+  console.log(musicObject);
 })
 
 class Pomdoro extends React.Component {
@@ -48,6 +52,7 @@ class Pomdoro extends React.Component {
     }
     return data;
   }
+
   _changeState(){
     const data=this.state.state=="work"?"relax":"work";
     this.setState({
@@ -67,16 +72,18 @@ class Pomdoro extends React.Component {
     }
     musicPlayer.play();
   }
+
   _pauseMusic(){
     const musicPlayer=document.getElementById("beep");
     musicPlayer.pause();
   }
+
   _resetMusic(){
     const musicPlayer=document.getElementById("beep");
     musicPlayer.currentTime=0;
     musicPlayer.pause();
   }
-  
+  // 增加和减少休息时间的函数
   changeBreakMinutes(step){
     const data=this._checkAndReturnNumber(this.state.breakMinutes+step);
     this.setState({
@@ -84,7 +91,7 @@ class Pomdoro extends React.Component {
       settingTime:this.state.state==='work'?false:true
     })
   }
-
+  // 增加和减少工作时间的函数
   changeSessionMinutes(step){
     const data=this._checkAndReturnNumber(this.state.sessionMinutes+step);
     this.setState({
@@ -92,7 +99,7 @@ class Pomdoro extends React.Component {
       settingTime:this.state.state==='relax'?false:true
     })
   }
-
+  // 重置时间和状态的函数
   reset(){
     this.setState({
       breakMinutes:5,
@@ -104,7 +111,7 @@ class Pomdoro extends React.Component {
     this._resetMusic();
 
   }
-
+  // 让Timer重置的函数
   resetTimer(){
     if(this.state.timereboot===true){
       this.setState({
@@ -115,7 +122,7 @@ class Pomdoro extends React.Component {
       return [];
     }
   }
-
+  // 设置Timer的时间的函数
   giveTimerTime(){
     if(this.state.settingTime===true){
       this.setState({
@@ -132,7 +139,7 @@ class Pomdoro extends React.Component {
     }
     return [];
   }
-
+  // 切换状态时，让声音停止的函数
   changePlay(){
     const data=this.state.play?false:true;
     this.setState({
@@ -149,7 +156,7 @@ class Pomdoro extends React.Component {
     }
   }
 
-  // 获得用户设置的本地音乐文件
+  // 获得用户设置的本地音乐文件，并上传到electron-store的文件中
   handleInput(file,propName){
     if(propName==="breakMusic"){
       this.setState({
@@ -165,23 +172,26 @@ class Pomdoro extends React.Component {
       ipcRenderer.send("change-sessionMusic",file.path);
     } 
   }
-
+  // 传递设置时间的函数
   nextCountLength(){
     return this.state.state==='work'? this.state.sessionMinutes:this.state.breakMinutes;
   }
-
+  // 状态转换时的动作函数
   onTime(){
     this._changeState();
     this._playMusic();
   }
 
   // at this point the musicObject variable is not changed.
-
   componentDidMount(){
     console.log("componentDidMount:"+this.state.breakMusic);
   }
   
   componentWillUpdate(nextProps,nextState){
+    // 因为还对React组件的生命周期
+    // 和electron的信息流通的前后把控不够，
+    // 所以初始音乐文件只能事后在运行时加载
+    // 下面是判断是否为第一次使用，还没有设置音乐。
     let check=0; // bit 00
     if(nextState.breakMusic == ""){
       check=check | 2; //bit 10

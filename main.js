@@ -4,6 +4,15 @@ const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const Store = require('electron-store');
 
 const store = new Store();
+// 这个store的存储结构是：
+/*
+{
+  "music":{
+    breakMusic:'', 
+    sessionMusic:''
+  }
+}
+*/
 let musicData = store.get('music') || {breakMusic:'', sessionMusic:''};
 
 // see the file's path
@@ -70,7 +79,8 @@ app.on('ready', ()=>{
     dialog.showMessageBox({
       type: "info",
       title: '提示',
-      message: '请选择切换时的音乐文件'
+      message: '第一次使用请选择切换时的2个音乐文件',
+      buttons: 'OK'
     })
   }
 });

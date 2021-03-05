@@ -6,3 +6,8 @@ components/AddMusic.js
 
 yarn.lock
 yarn-error.log
+
+
+.DS_Store
+
+/music
