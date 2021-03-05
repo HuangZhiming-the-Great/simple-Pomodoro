@@ -20,8 +20,8 @@ class Pomdoro extends React.Component {
   constructor(props){
     super(props);
     this.state={
-      breakMinutes:1,
-      sessionMinutes:1,
+      breakMinutes:5,
+      sessionMinutes:25,
       state:"work",
       play:true,
       settingTime:false,
