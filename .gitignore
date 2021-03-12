@@ -1,11 +1,12 @@
 node_modules
 dist
 
-components/AddMusic.js
-*.scss
-
+# errors
 yarn.lock
 yarn-error.log
 
-
+# general ignore
 .DS_Store
+
+# temple files
+test.html

@@ -16,7 +16,7 @@ const store = new Store();
 let musicData = store.get('music') || {breakMusic:'', sessionMusic:''};
 
 // see the file's path
-// console.log(app.getPath('userData'));
+console.log(app.getPath('userData'));
 
 store.set('music', musicData);
 
@@ -41,7 +41,7 @@ const createWindow = () => {
   mainWindow.setMenu(null);
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 
   // load the music files.
   mainWindow.webContents.on("did-finish-load",()=>{
@@ -80,7 +80,7 @@ app.on('ready', ()=>{
       type: "info",
       title: '提示',
       message: '第一次使用请选择切换时的2个音乐文件',
-      buttons: 'OK'
+      buttons: ['OK']
     })
   }
 });
