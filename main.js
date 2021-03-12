@@ -28,7 +28,7 @@ const createWindow = () => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 800,
-    height: 600,
+    height: 650,
     webPreferences: {
       nodeIntegration: true,
     },
@@ -51,14 +51,18 @@ const createWindow = () => {
   ipcMain.on("change-breakMusic",(event,data)=>{
     musicData=Object.assign({},musicData,{breakMusic:data});
     store.set("music",musicData);
+    /* just a test
     console.log("break");
     console.log(store.get("music"));
+    */
   })
 
   ipcMain.on("change-sessionMusic",(event,data)=>{
     musicData = Object.assign({},musicData,{sessionMusic:data});
     store.set("music",musicData);
+    /* just a test
     console.log(store.get("music"));
+    */
   })
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {

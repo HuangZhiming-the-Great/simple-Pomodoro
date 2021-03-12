@@ -11,20 +11,17 @@
   "homepage": "http://example.com",
   "build": {
     "appId": "com.example.electron-boilerplate",
-    "files": [
-      "img/music/*"
-    ],
     "directories": {
       "buildResources": "resources"
     },
-    "win": {
-      "icon": "./asserts/img/512*512.png",
-      "title": "Pomodoro",
-      "msi": true
-    },
     "linux": {
+      "icon": "./asserts/img/512*512.png"
+    },
+    "mac": {
       "icon": "./asserts/img/512*512.png",
-      "title": "Pomodoro"
+      "target": [
+        "dmg","zip"
+      ]
     }
   },
   "author": "HuangZhiming",

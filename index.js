@@ -11,9 +11,10 @@ let musicObject;
 // 初始化两个音乐文件
 ipcRenderer.on("init-music-files", (event, data)=>{
   musicObject=data;
-  //查看音乐信息
+  /* 查看音乐信息
   console.log("ipcrender");
   console.log(musicObject);
+  */
 })
 
 class Pomdoro extends React.Component {
