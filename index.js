@@ -149,7 +149,7 @@ class Pomdoro extends React.Component {
     //修补点击暂停键音乐不停止的问题。
     if(data){
       const musicPlayer=document.getElementById("beep");
-      if(musicPlayer.currentTime<musicPlayer.duration){
+      if(musicPlayer.currentTime!=0){
         this._playMusic();
       }
     }else{
